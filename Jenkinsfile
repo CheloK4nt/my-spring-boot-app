@@ -9,12 +9,12 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Clona el repositorio
-                git branch: 'main', url: 'https://github.com/CheloK4nt/my-spring-boot-app.git'
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         // Clona el repositorio
+        //         git branch: 'main', url: 'https://github.com/CheloK4nt/my-spring-boot-app.git'
+        //     }
+        // }
         stage('Build') {
             steps {
                 // Construye el proyecto Maven
