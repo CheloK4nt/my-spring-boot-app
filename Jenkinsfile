@@ -34,55 +34,55 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Crea un archivo de despliegue para Kubernetes
-                    bat """
-                    cat <<EOF > k8s-deployment.yaml
-                    apiVersion: apps/v1
-                    kind: Deployment
-                    metadata:
-                      name: my-spring-boot-app
-                      labels:
-                        app: my-spring-boot-app
-                    spec:
-                      replicas: 1
-                      selector:
-                        matchLabels:
-                          app: my-spring-boot-app
-                      template:
-                        metadata:
-                          labels:
-                            app: my-spring-boot-app
-                        spec:
-                          containers:
-                          - name: ssepulvedacl/my-spring-boot-app
-                            image: ${env.REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_ID}
-                            ports:
-                            - containerPort: 8080
-                    ---
-                    apiVersion: v1
-                    kind: Service
-                    metadata:
-                      name: my-spring-boot-app-service
-                    spec:
-                      type: LoadBalancer
-                      ports:
-                      - port: 80
-                        targetPort: 8080
-                      selector:
-                        app: my-spring-boot-app
-                    EOF
-                    """
+        // stage('Deploy to Kubernetes') {
+        //     steps {
+        //         script {
+        //             // Crea un archivo de despliegue para Kubernetes
+        //             bat """
+        //             cat <<EOF > k8s-deployment.yaml
+        //             apiVersion: apps/v1
+        //             kind: Deployment
+        //             metadata:
+        //               name: my-spring-boot-app
+        //               labels:
+        //                 app: my-spring-boot-app
+        //             spec:
+        //               replicas: 1
+        //               selector:
+        //                 matchLabels:
+        //                   app: my-spring-boot-app
+        //               template:
+        //                 metadata:
+        //                   labels:
+        //                     app: my-spring-boot-app
+        //                 spec:
+        //                   containers:
+        //                   - name: ssepulvedacl/my-spring-boot-app
+        //                     image: ${env.REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_ID}
+        //                     ports:
+        //                     - containerPort: 8080
+        //             ---
+        //             apiVersion: v1
+        //             kind: Service
+        //             metadata:
+        //               name: my-spring-boot-app-service
+        //             spec:
+        //               type: LoadBalancer
+        //               ports:
+        //               - port: 80
+        //                 targetPort: 8080
+        //               selector:
+        //                 app: my-spring-boot-app
+        //             EOF
+        //             """
 
-                    // Despliega en Kubernetes
-                    //withKubeConfig([credentialsId: env.KUBE_CONFIG_PATH]) {
-                        bat 'kubectl apply -f k8s-deployment.yaml'
-                    //}
-                }
-            }
-        }
+        //             // Despliega en Kubernetes
+        //             //withKubeConfig([credentialsId: env.KUBE_CONFIG_PATH]) {
+        //                 bat 'kubectl apply -f k8s-deployment.yaml'
+        //             //}
+        //         }
+        //     }
+        // }
 	stage('Cleanup'){
 		steps{
 			//Limpieza despues de cada build
