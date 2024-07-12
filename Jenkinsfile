@@ -15,12 +15,12 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/CheloK4nt/my-spring-boot-app.git'
             }
         }
-    //     stage('Build') {
-    //         steps {
-    //             // Construye el proyecto Maven
-    //             sh 'mvn clean package'
-    //         }
-    //     }
+        stage('Build') {
+            steps {
+                // Construye el proyecto Maven
+                sh 'mvn clean package'
+            }
+        }
     //     stage('Build Docker Image') {
     //         steps {
     //             script {
