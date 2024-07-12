@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Construye la imagen Docker
-                    def image = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
+                    def image = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
                     // Inicia sesión en el registro Docker
                     docker.withRegistry("https://${env.REGISTRY}", 'docker-credentials-id') {
                         // Empuja la imagen al registro
