@@ -21,19 +21,19 @@ pipeline {
                 bat 'mvn clean package'
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Construye la imagen Docker
-                    def image = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
-                    // Inicia sesión en el registro Docker
-                    docker.withRegistry("https://${env.REGISTRY}", 'docker-credentials-id') {
-                        // Empuja la imagen al registro
-                        image.push()
-                    }
-                }
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         script {
+        //             // Construye la imagen Docker
+        //             def image = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
+        //             // Inicia sesión en el registro Docker
+        //             docker.withRegistry("https://${env.REGISTRY}", 'docker-credentials-id') {
+        //                 // Empuja la imagen al registro
+        //                 image.push()
+        //             }
+        //         }
+        //     }
+        // }
         // stage('Deploy to Kubernetes') {
         //     steps {
         //         script {
