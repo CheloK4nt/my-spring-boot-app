@@ -43,12 +43,25 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <!-- Agregar el bloque de propiedades para SonarQube -->
+  <properties>
+    <sonar.projectKey>actividad6</sonar.projectKey>
+    <sonar.host.url>http://localhost:9000</sonar.host.url>
+    <sonar.login>squ_fbd2a41f9e439a4ff3993ef20df8a53e3214c8dc</sonar.login>
+  </properties>
+	
   <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+	    <plugin>
+            	<groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+        	<version>3.9.1.2184</version>
+      	    </plugin>
         </plugins>
     </build>
 </project>
