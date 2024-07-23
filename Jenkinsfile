@@ -5,7 +5,8 @@ pipeline {
         // Define environment variables
         DOCKER_IMAGE = "ssepulvedacl/my-spring-boot-app"
         REGISTRY = "hub.docker.com" // e.g., Docker Hub or any other registry
-        //KUBE_CONFIG_PATH = credentials('kube-config') // Credential ID for Kubernetes config
+        SONARQUBE_URL = 'http://localhost:9000' // Cambia esto a la URL de tu servidor SonarQube
+        SONARQUBE_TOKEN = 'squ_fbd2a41f9e439a4ff3993ef20df8a53e3214c8dc' // Cambia esto a tu token de SonarQube
     }
 
     stages {
@@ -17,8 +18,21 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // Construye el proyecto Maven
-                bat 'mvn clean package'
+                // Construye el proyecto Maven y ejecuta el análisis de SonarQube
+                withSonarQubeEnv('SonarQube') {
+                    bat 'mvn clean package sonar:sonar'
+                }
+            }
+        }
+        stage('SonarQube Quality Gate') {
+            steps {
+                // Esperar el resultado del análisis de SonarQube
+                script {
+                    def qg = waitForQualityGate()
+                    if (qg.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    }
+                }
             }
         }
         // stage('Build Docker Image') {
@@ -83,13 +97,11 @@ pipeline {
         //         }
         //     }
         // }
-	stage('Cleanup'){
-		steps{
-			//Limpieza despues de cada build
-			cleanWs()
-		}
-	}
+        stage('Cleanup') {
+            steps {
+                // Limpieza después de cada build
+                cleanWs()
+            }
+        }
     }
-
 }
-
